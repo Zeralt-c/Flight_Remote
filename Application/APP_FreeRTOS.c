@@ -20,7 +20,12 @@ void power_task( void *args );
 TaskHandle_t power_task_handle;
 #define POWER_TASK_PERIOD_MS 10000  //定义任务周期，单位为ms
 
-//
+//通信任务，负责处理通信相关的操作，如数据发送、接收等
+void comm_task( void *args );
+#define COMM_TASK_STACK_SIZE 128
+#define COMM_TASK_PRIORITY 3   //通信任务优先级，处理通信数据，优先级较高但低于电源管理任务
+TaskHandle_t comm_task_handle;
+#define COMM_TASK_PERIOD_MS 6  //定义任务周期，单位为ms
 
 //
  void APP_FreeRTOS_Start(void){
@@ -36,16 +41,16 @@ TaskHandle_t power_task_handle;
     );
 
     //创建其他任务、队列、信号量等对象
-    /*
+    //通信任务，优先级较高但低于电源管理任务，确保及时处理通信数据
     xTaskCreate(
-        task2,       // 任务函数
-        "Task2", // 任务名称
-        TASK2_STACK_SIZE,         // 堆栈大小
+        comm_task,       // 任务函数
+        "CommTask", // 任务名称
+        COMM_TASK_STACK_SIZE,         // 堆栈大小
         NULL,        // 任务参数
-        TASK2_PRIORITY,           // 任务优先级
-        &task2_handle         // 任务句柄
+        COMM_TASK_PRIORITY,           // 任务优先级
+        &comm_task_handle         // 任务句柄
     );
-    */
+    
     //启动调度器，开始执行任务
     vTaskStartScheduler();
 }
@@ -59,7 +64,7 @@ void power_task( void *args ){
         /**每10s执行一次维持电源启动任务，
          * 为了防止机械启动干扰任务，先延时10s，确保机械启动完成后再执行电源维持操作
          */
-        vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(10000));
+        vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(POWER_TASK_PERIOD_MS));
 
         //启动电源
         HAL_GPIO_WritePin(POWER_KEY_GPIO_Port, POWER_KEY_Pin, GPIO_PIN_RESET);
@@ -70,4 +75,28 @@ void power_task( void *args ){
         
     }
 }
+
+//通信任务，负责处理通信相关的操作，如数据发送、接收等
+//测试数据缓冲区，用于存储通信数据，测试发送hello world
+uint8_t test_data_buffer[TX_PLOAD_WIDTH] = "hello world";
+
+void comm_task( void *args ){
+    //获取当前基准时间
+    TickType_t current_tick = xTaskGetTickCount();
+    while(1){
+        //发送数据，先进入TX模式，发送完成后进入RX模式
+        SI24R1_TX_Mode();
+        //发送数据包
+        SI24R1_TxPacket(test_data_buffer);
+        SI24R1_RX_Mode();
+        /**每6ms执行一次通信任务，处理通信数据，
+         * 根据实际通信需求调整任务周期，确保及时处理通信数据
+         */
+        vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(COMM_TASK_PERIOD_MS));
+
+        //处理通信数据的代码，例如发送或接收数据
+        //这里可以添加具体的通信处理逻辑，例如读取传感器数据并发送，或者接收命令并执行等
+    }
+}
+
 

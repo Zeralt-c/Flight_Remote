@@ -43,3 +43,5 @@
 .\p02_remote_hal\app_freertos.o: D:\Project SWs\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
 .\p02_remote_hal\app_freertos.o: D:\Project SWs\Keil5\ARM\ARMCC\Bin\..\include\string.h
 .\p02_remote_hal\app_freertos.o: ./interface_HW/Int_IP5305T.h
+.\p02_remote_hal\app_freertos.o: ./interface_HW/Int_SI24R1.h
+.\p02_remote_hal\app_freertos.o: ../Core/Inc/spi.h
