@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'P01_flight_hal' 
+ * Project: 'P02_remote_hal' 
  * Target:  'P01_flight_hal' 
  */
 
