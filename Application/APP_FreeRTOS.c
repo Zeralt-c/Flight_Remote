@@ -71,10 +71,3 @@ void power_task( void *args ){
     }
 }
 
-void task2( void *args ){
-    while(1){
-        LOG_DEBUG("Task2 is running");
-        vTaskDelay(pdMS_TO_TICKS(1500)); // 延时1.5秒
-    }
-}
-
