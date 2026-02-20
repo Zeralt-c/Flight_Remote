@@ -194,6 +194,7 @@ uint8_t SI24R1_RxPacket(uint8_t *rxbuf)
 /********************************************************
 函数功能：	发送一个数据包                      
 入口参数：	txbuf:要发送的数据
+注意：		使用vTaskDelay()函数，必须在FreeRTOS中使用
 返回值：	0x10:达到最大重发次数，发送失败 
           	0x20:发送成功            
           	0xff:发送失败                  
@@ -211,6 +212,7 @@ uint8_t SI24R1_TxPacket(uint8_t *txbuf)
 	while((state & TX_DS) == 0 && (state & MAX_RT) == 0)					//等待发送完成或达到最大重发次数
 	{
 		state = SI24R1_Read_Reg(STATUS);  									//读取状态寄存器的值
+		vTaskDelay(1);//防堵塞
 	}
 	SI24R1_Write_Reg(SI24R1_WRITE_REG+STATUS, state); 					//清除TX_DS或MAX_RT中断标志
 	if(state&MAX_RT)													//达到最大重发次数

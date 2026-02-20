@@ -925,6 +925,16 @@
               <FileType>5</FileType>
               <FilePath>.\interface_HW\Int_SI24R1.h</FilePath>
             </File>
+            <File>
+              <FileName>Int_Key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\interface_HW\Int_Key.c</FilePath>
+            </File>
+            <File>
+              <FileName>Int_key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\interface_HW\Int_key.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -7,6 +7,7 @@
 #include "Com_debug.h"
 #include "Int_IP5305T.h"
 #include "Int_SI24R1.h"
+#include "Int_Key.h"
 
 /**
  *@brief  FreeRTOS启动函数

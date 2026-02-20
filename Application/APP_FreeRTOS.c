@@ -27,8 +27,14 @@ void comm_task( void *args );
 TaskHandle_t comm_task_handle;
 #define COMM_TASK_PERIOD_MS 6  //定义任务周期，单位为ms
 
-//
- void APP_FreeRTOS_Start(void){
+//按键任务，负责处理按键相关的操作，如按键检测、按键处理等
+void key_task( void *args );
+#define KEY_TASK_STACK_SIZE 128
+#define KEY_TASK_PRIORITY 2   //按键任务优先级，处理按键事件
+TaskHandle_t key_task_handle;
+#define KEY_TASK_PERIOD_MS 20  //定义任务周期，单位为ms
+
+void APP_FreeRTOS_Start(void){
     //在这里创建任务、队列、信号量等FreeRTOS对象
     //电源管理任务，优先级较高，确保及时响应电源事件
     xTaskCreate(
@@ -51,6 +57,15 @@ TaskHandle_t comm_task_handle;
         &comm_task_handle         // 任务句柄
     );
     
+    //按键任务，优先级较低，处理按键事件
+    xTaskCreate(
+        key_task,       // 任务函数
+        "KeyTask", // 任务名称
+        KEY_TASK_STACK_SIZE,         // 堆栈大小
+        NULL,        // 任务参数
+        KEY_TASK_PRIORITY,           // 任务优先级
+        &key_task_handle         // 任务句柄
+    );
     //启动调度器，开始执行任务
     vTaskStartScheduler();
 }
@@ -99,4 +114,25 @@ void comm_task( void *args ){
     }
 }
 
+//按键任务，负责处理按键相关的操作，如按键检测、按键处理等
 
+void key_task( void *args ){
+
+    //获取当前基准时间
+
+    TickType_t current_tick = xTaskGetTickCount();
+
+    while(1){
+        /**每20ms执行一次按键任务，处理按键事件，
+         * 根据实际按键需求调整任务周期，确保及时处理按键事件
+         */
+        Key_type key_status = Key_Get(); //调用按键扫描函数，获取按键状态
+        //打印按键状态
+        if(key_status != KEY_NONE){
+            LOG_DEBUG("Key Status: %02X\r\n", key_status);
+        }
+        vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(KEY_TASK_PERIOD_MS));
+        //处理按键事件的代码，例如检测按键状态并执行相应操作
+        //这里可以添加具体的按键处理逻辑，例如按键按下时发送数据，或者按键长按时执行特定操作等
+    }
+}

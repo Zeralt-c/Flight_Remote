@@ -2,6 +2,8 @@
 #define __nRF24L01P__
 
 #include "spi.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 //SI24R1引脚配置，需要CUBEMX中配置SPI
 //拉低片选
