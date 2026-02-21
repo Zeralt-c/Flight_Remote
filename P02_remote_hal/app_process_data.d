@@ -42,3 +42,9 @@
 .\p02_remote_hal\app_process_data.o: ./FreeRTOS/include/list.h
 .\p02_remote_hal\app_process_data.o: ./interface_HW/Int_joystick.h
 .\p02_remote_hal\app_process_data.o: ../Core/Inc/adc.h
+.\p02_remote_hal\app_process_data.o: ./common/Com_debug.h
+.\p02_remote_hal\app_process_data.o: ../Core/Inc/usart.h
+.\p02_remote_hal\app_process_data.o: D:\Project SWs\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\p02_remote_hal\app_process_data.o: D:\Project SWs\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\p02_remote_hal\app_process_data.o: D:\Project SWs\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\p02_remote_hal\app_process_data.o: ./common/Com_tool.h

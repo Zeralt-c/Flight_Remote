@@ -35,7 +35,7 @@ TaskHandle_t key_task_handle;
 #define KEY_TASK_PERIOD_MS 20  //定义任务周期，单位为ms
 
 //摇杆任务
-Joystick_Struct joystick_data = {0}; // 定义一个结构体变量用于存储摇杆数据
+
 void joystick_task( void *args );
 #define JOYSTICK_TASK_STACK_SIZE 128
 #define JOYSTICK_TASK_PRIORITY 2   //摇杆任务优先级，处理摇杆输入
@@ -113,18 +113,14 @@ void power_task( void *args ){
 }
 
 //通信任务，负责处理通信相关的操作，如数据发送、接收等
-//测试数据缓冲区，用于存储通信数据，测试发送hello world
-uint8_t test_data_buffer[TX_PLOAD_WIDTH] = "hello world";
+
 
 void comm_task( void *args ){
     //获取当前基准时间
     TickType_t current_tick = xTaskGetTickCount();
     while(1){
         //发送数据，先进入TX模式，发送完成后进入RX模式
-        SI24R1_TX_Mode();
-        //发送数据包
-        SI24R1_TxPacket(test_data_buffer);
-        SI24R1_RX_Mode();
+        App_transmit_data();
         /**每6ms执行一次通信任务，处理通信数据，
          * 根据实际通信需求调整任务周期，确保及时处理通信数据
          */
@@ -147,11 +143,7 @@ void key_task( void *args ){
         /**每20ms执行一次按键任务，处理按键事件，
          * 根据实际按键需求调整任务周期，确保及时处理按键事件
          */
-        Key_type key_status = Key_Get(); //调用按键扫描函数，获取按键状态
-        //打印按键状态
-        if(key_status != KEY_NONE){
-            LOG_DEBUG("Key Status: %02X\r\n", key_status);
-        }
+        App_process_key_data(); // 调用按键处理函数
         vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(KEY_TASK_PERIOD_MS));
         //处理按键事件的代码，例如检测按键状态并执行相应操作
         //这里可以添加具体的按键处理逻辑，例如按键按下时发送数据，或者按键长按时执行特定操作等
@@ -168,13 +160,7 @@ void joystick_task( void *args ){
         /**每20ms执行一次摇杆任务，处理摇杆输入，
          * 根据实际摇杆需求调整任务周期，确保及时处理摇杆输入
          */
-        Joystick_GetData(&joystick_data); // 调用获取摇杆数据函数，将数据存储到结构体中
-        
-        LOG_DEBUG(":%d,%d,%d,%d\n", 
-                  joystick_data.thr, joystick_data.yaw, joystick_data.pitch, joystick_data.roll);
-        vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS));
-        
-        //处理摇杆事件的代码，例如读取摇杆数据并执行相应操作，VOFA数据观测格式
-        //这里可以添加具体的摇杆处理逻辑，例如根据摇杆数据控制飞行器姿态等
+        App_process_joystick_data(); // 调用摇杆处理函数
+        vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS));        
     }
 }

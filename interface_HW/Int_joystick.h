@@ -7,10 +7,10 @@
 #include "adc.h"
 
 typedef struct {
-    uint16_t thr;// 油门
-    uint16_t yaw;// 航向
-    uint16_t roll;// 横滚
-    uint16_t pitch;// 俯仰
+    int16_t thr;// 油门
+    int16_t yaw;// 航向
+    int16_t roll;// 横滚
+    int16_t pitch;// 俯仰
 } Joystick_Struct;
 
 /**

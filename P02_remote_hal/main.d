@@ -50,5 +50,9 @@
 .\p02_remote_hal\main.o: ./FreeRTOS/include/list.h
 .\p02_remote_hal\main.o: ./interface_HW/Int_IP5305T.h
 .\p02_remote_hal\main.o: ./interface_HW/Int_SI24R1.h
+.\p02_remote_hal\main.o: ./Application/App_process_data.h
 .\p02_remote_hal\main.o: ./interface_HW/Int_Key.h
 .\p02_remote_hal\main.o: ./interface_HW/Int_joystick.h
+.\p02_remote_hal\main.o: ./common/Com_tool.h
+.\p02_remote_hal\main.o: ./Application/App_transmit_data.h
+.\p02_remote_hal\main.o: ./Application/App_FreeRTOS.h
