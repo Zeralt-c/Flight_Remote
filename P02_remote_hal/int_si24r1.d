@@ -24,11 +24,22 @@
 .\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h
 .\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h
 .\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h
+.\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h
+.\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h
 .\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 .\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 .\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 .\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
 .\p02_remote_hal\int_si24r1.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/include/FreeRTOS.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/FreeRTOSConfig.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/include/projdefs.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/include/portable.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/include/deprecated_definitions.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/portable/portmacro.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/include/mpu_wrappers.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/include/task.h
+.\p02_remote_hal\int_si24r1.o: ./FreeRTOS/include/list.h
 .\p02_remote_hal\int_si24r1.o: ./common/Com_debug.h
 .\p02_remote_hal\int_si24r1.o: ../Core/Inc/usart.h
 .\p02_remote_hal\int_si24r1.o: D:\Project SWs\Keil5\ARM\ARMCC\Bin\..\include\stdio.h

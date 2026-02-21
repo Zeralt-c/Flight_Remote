@@ -34,6 +34,14 @@ void key_task( void *args );
 TaskHandle_t key_task_handle;
 #define KEY_TASK_PERIOD_MS 20  //定义任务周期，单位为ms
 
+//摇杆任务
+Joystick_Struct joystick_data = {0}; // 定义一个结构体变量用于存储摇杆数据
+void joystick_task( void *args );
+#define JOYSTICK_TASK_STACK_SIZE 128
+#define JOYSTICK_TASK_PRIORITY 2   //摇杆任务优先级，处理摇杆输入
+TaskHandle_t joystick_task_handle;
+#define JOYSTICK_TASK_PERIOD_MS 20  //定义任务周期，单位为ms
+
 void APP_FreeRTOS_Start(void){
     //在这里创建任务、队列、信号量等FreeRTOS对象
     //电源管理任务，优先级较高，确保及时响应电源事件
@@ -66,9 +74,22 @@ void APP_FreeRTOS_Start(void){
         KEY_TASK_PRIORITY,           // 任务优先级
         &key_task_handle         // 任务句柄
     );
+
+    //摇杆任务，优先级较低，处理摇杆输入
+    xTaskCreate(    
+        joystick_task,       // 任务函数
+        "JoystickTask", // 任务名称
+        JOYSTICK_TASK_STACK_SIZE,         // 堆栈大小
+        NULL,        // 任务参数
+        JOYSTICK_TASK_PRIORITY,           // 任务优先级
+        &joystick_task_handle         // 任务句柄
+    );
+
     //启动调度器，开始执行任务
     vTaskStartScheduler();
 }
+
+
 
 //各任务内容
 //电源管理任务，负责监控电源状态，控制电源开关等
@@ -134,5 +155,26 @@ void key_task( void *args ){
         vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(KEY_TASK_PERIOD_MS));
         //处理按键事件的代码，例如检测按键状态并执行相应操作
         //这里可以添加具体的按键处理逻辑，例如按键按下时发送数据，或者按键长按时执行特定操作等
+    }
+}
+
+//摇杆任务，负责处理摇杆相关的操作，如摇杆数据读取、处理等
+void joystick_task( void *args ){
+    //获取当前基准时间
+    TickType_t current_tick = xTaskGetTickCount();
+    //初始化摇杆数据
+    Joystick_Init();    
+    while(1){
+        /**每20ms执行一次摇杆任务，处理摇杆输入，
+         * 根据实际摇杆需求调整任务周期，确保及时处理摇杆输入
+         */
+        Joystick_GetData(&joystick_data); // 调用获取摇杆数据函数，将数据存储到结构体中
+        
+        LOG_DEBUG(":%d,%d,%d,%d\n", 
+                  joystick_data.thr, joystick_data.yaw, joystick_data.pitch, joystick_data.roll);
+        vTaskDelayUntil(&current_tick, pdMS_TO_TICKS(JOYSTICK_TASK_PERIOD_MS));
+        
+        //处理摇杆事件的代码，例如读取摇杆数据并执行相应操作，VOFA数据观测格式
+        //这里可以添加具体的摇杆处理逻辑，例如根据摇杆数据控制飞行器姿态等
     }
 }

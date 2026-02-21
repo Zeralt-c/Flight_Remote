@@ -8,6 +8,7 @@
 #include "Int_IP5305T.h"
 #include "Int_SI24R1.h"
 #include "Int_Key.h"
+#include "Int_joystick.h"
 
 /**
  *@brief  FreeRTOS启动函数
